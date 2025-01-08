@@ -14,12 +14,13 @@ SmartManMailSender.exe
  
 
 ## 呼叫範例 (使用Outlook)
-SmartManMailSender.exe outlook -sender frank@gmail.com -s "My title" -f "C:\\Desktop\\test1.pdf" -t "template.txt" -p placeholder1,placeholder2, "placeholder that has comma,"... 
+SmartManMailSender.exe outlook -sender frank@outlook.com -r frank@outlook.com -s "My title" -f "C:\\Desktop\\test1.pdf" -t "template.txt" -p placeholder1,placeholder2, "placeholder that has comma,"... 
 
 ## 參數說明 (使用Outlook)
 SmartManMailSender.exe → 執行檔名稱
 outlook → 寄送方式 (固定為outlook)
--sender frank@gmail.com → 寄件人員
+-sender frank@outlook.com → 寄件人員
+-r frank@outlook.com → 收信人員
 -s "My title" → 信件標題 (若包含空白需使用雙引號包起來)
 -f "C:\\Desktop\\test1.pdf" → 附件檔案路徑
 -t "template.txt" → 信件樣板路徑
