@@ -1,22 +1,22 @@
-SmartManMailSender使用說明
+# SmartManMailSender使用說明
 更新日期: 2024-10-09 by Frank Huang
-程式名稱
+## 程式名稱
 SmartManMailSender.exe
 
-程式目的
+## 程式目的
 一個可以透過Outlool/SMTP發送含附件的郵件給指定收件者的執行檔(exe)。
 
-功能特色:
+## 功能特色:
 •	支援Outlook或是SMTP發送郵件。
 •	支援HTML格式的信件內容 – 模板。
 •	支援動態文字取代功能 – 預留文字。
 •	支援附件檔案。
  
 
-呼叫範例 (使用Outlook)
+## 呼叫範例 (使用Outlook)
 SmartManMailSender.exe outlook -sender frank@gmail.com -s "My title" -f "C:\\Desktop\\test1.pdf" -t "template.txt" -p placeholder1,placeholder2, "placeholder that has comma,"... 
 
-參數說明 (使用Outlook)
+## 參數說明 (使用Outlook)
 SmartManMailSender.exe → 執行檔名稱
 outlook → 寄送方式 (固定為outlook)
 -sender frank@gmail.com → 寄件人員
@@ -29,10 +29,10 @@ outlook → 寄送方式 (固定為outlook)
 
 
 
-呼叫範例 (使用SMTP)
+## 呼叫範例 (使用SMTP)
 SmartManMailSender.exe smtp -host smtp.hibox.biz -port 587 -ssl false -username frank@smartman.com.tw -password mypassword -sender_name "志元資訊/Frank" -sender_email frank@smartman.com.tw -receiver_name "Receiver/Frank" -receiver_email frank@smartman.com.tw -s "My title" -f "test1.pdf" -t "template.txt" -p Frank,2024/10,frank@smartman.com.tw,"HR department",2024/10/10,"Octo 10, 2024","Frank Huang"
 
-參數說明 (使用Outlook)
+## 參數說明 (使用Outlook)
 SmartManMailSender.exe → 執行檔名稱
 smtp → 寄送方式，固定為smtp
                 -host smtp.hibox.biz → SMTP伺服器
@@ -49,7 +49,7 @@ smtp → 寄送方式，固定為smtp
                 -t "template.txt" → 樣板路徑
                 -p Frank,2024/10,frank@smartman.com.tw,"HR  department",2024/10/10,"Octo 10, 2024","Frank Huang" → 預留文字，以逗號隔開 (非必要)
 
-常見問題
+## 常見問題
 
 1.	什麼是預留文字?
 預留文字是在信件模板中，實際執行寄信程式時會取代預留文字的內容以置換成實際的內容。
@@ -65,6 +65,8 @@ smtp → 寄送方式，固定為smtp
 郵件模板以HTML格式的文本內容呈現，使用HTML格式可定義信件中文字的大小、字體、行距等樣式。前往 https://onlinehtmleditor.dev/ 或其他提供HTML編輯的網站，從中複製模板。以下為範例步驟：
 
 (1)	前往https://onlinehtmleditor.dev/，透過上方工具欄中編輯下方的文字。
+![image](https://github.com/user-attachments/assets/23bd7f6d-221d-4b8e-a7d2-e0b4fa4d858a)
+
  
 (2)	設定預留文字:
 模板可以任意數量的預留文字，名稱如[placeholder_1]、[placeholder_2]、...、[placeholder_n]。 [placeholder_n] 會被後來給的參數文字給取代，讓信件部份的文字可以置換成合適的資訊，如發薪年月、收件者名稱等文字。預留文字取代順序會與提供的預留文字參數順序相同。如參數提供-p Frank,2024/10,frank@smartman.com.tw,"HR department, Frank Huang"則[placeholder_1]=Frank、[placeholder_2]=2024/10、[placeholder_3]= frank@smartman.com.tw、[placeholder_4]= HR department, Frank Huang。
@@ -77,6 +79,7 @@ smtp → 寄送方式，固定為smtp
 該模板會是一個獨立的文字檔如template.txt，並可以儲存位於本機上任何位置，指定模板路徑時可使用絕對或相對路徑。
 
  範例template.txt如下:
+ ```html
 <pre>
 <span style="font-size:14px"><span style="font-family:Arial,Helvetica,sans-serif">Dear <strong>[Placeholder1]</strong>,</span></span></pre>
 
@@ -98,7 +101,7 @@ smtp → 寄送方式，固定為smtp
 [Placeholder4]&trade;</span></p>
 
 <p>&nbsp;</p>
-
+```
 6.	TD中如何呼叫? 範例如下：
 Call SalLoadAppAndWait( 'SmartManMailSender.exe outlook -sender frank@gmail.com -s "My title" -f "C:\\Desktop\\test1.pdf" -t "template.txt" -p placeholder1,placeholder2, "placeholder that has comma,"', Window_NotVisible, nReturn )
 
