@@ -17,7 +17,6 @@ internal class Program
             string argumentDescriptions = @"Example arguments: 
                 SmartManMailSender.exe 
                 outlook 
-                -sender frank@gmail.com 
                 -s ""My title"" 
                 -f ""C:\\Desktop\\test1.pdf"" 
                 -t ""template.txt"" 
@@ -53,7 +52,7 @@ internal class Program
             var arguments = ParseArguments(args.Skip(1).ToArray());
 
             // Validate required arguments
-            if (emailMethod == "outlook" && (!arguments.ContainsKey("-sender") || !arguments.ContainsKey("-s")  || !arguments.ContainsKey("-t") || !arguments.ContainsKey("-r")))
+            if (emailMethod == "outlook" && (!arguments.ContainsKey("-s")  || !arguments.ContainsKey("-t") || !arguments.ContainsKey("-r")))
             {
                 LogError($"Missing required arguments for Outlook method. {argumentDescriptions}");
                 LogText("Program exited.");
@@ -104,7 +103,7 @@ internal class Program
             // Send email based on the chosen method
             if (emailMethod == "outlook")
             {
-                SendWithOutlook(senderEmail: arguments["-sender"], subject: subject, filePath: filePath, emailContent: emailContent, recipient: arguments["-r"]);
+                SendWithOutlook(subject: subject, filePath: filePath, emailContent: emailContent, recipient: arguments["-r"]);
             }
             else // smtp
             {
@@ -133,7 +132,7 @@ internal class Program
         }
     }
 
-    private static void SendWithOutlook(string senderEmail, string subject, string? filePath, string emailContent, string recipient)
+    private static void SendWithOutlook(string subject, string? filePath, string emailContent, string recipient)
     {
         try
         {
@@ -147,8 +146,8 @@ internal class Program
                 mailItem.Attachments.Add(filePath);
             }
             mailItem.Recipients.Add(recipient);
-            mailItem.SendUsingAccount = outlookApp.Session.Accounts.Cast<Outlook.Account>().FirstOrDefault(a => a.SmtpAddress.Equals(senderEmail, StringComparison.OrdinalIgnoreCase));
-            LogText($"Sending from {senderEmail} using Outlook...");
+            //mailItem.SendUsingAccount = outlookApp.Session.Accounts.Cast<Outlook.Account>().FirstOrDefault(a => a.SmtpAddress.Equals(senderEmail, StringComparison.OrdinalIgnoreCase));
+            LogText($"Sending to {recipient} using Outlook...");
             mailItem.Send();
         }
         catch (Exception ex)
