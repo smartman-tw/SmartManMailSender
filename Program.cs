@@ -21,6 +21,7 @@ internal class Program
                 -s ""My title"" 
                 -f ""C:\\Desktop\\test1.pdf"" 
                 -t ""template.txt"" 
+                -r frank@gmail.com 
                 -p placeholder1,placeholder2, ""placeholder that has comma,""... 
                 
                 OR
@@ -52,7 +53,7 @@ internal class Program
             var arguments = ParseArguments(args.Skip(1).ToArray());
 
             // Validate required arguments
-            if (emailMethod == "outlook" && (!arguments.ContainsKey("-sender") || !arguments.ContainsKey("-s")  || !arguments.ContainsKey("-t")))
+            if (emailMethod == "outlook" && (!arguments.ContainsKey("-sender") || !arguments.ContainsKey("-s")  || !arguments.ContainsKey("-t") || !arguments.ContainsKey("-r")))
             {
                 LogError($"Missing required arguments for Outlook method. {argumentDescriptions}");
                 LogText("Program exited.");
@@ -77,7 +78,7 @@ internal class Program
             var filePath = arguments.ContainsKey("-f") ? arguments["-f"] : null;
             var templatePath = arguments["-t"];
             var placeholders = arguments.ContainsKey("-p") ? arguments["-p"].Split(',') : new string[0];
-
+            
             // Validate file paths
             if (filePath != null && !File.Exists(filePath))
             {
@@ -103,7 +104,7 @@ internal class Program
             // Send email based on the chosen method
             if (emailMethod == "outlook")
             {
-                SendWithOutlook(senderEmail: arguments["-sender"], subject: subject, filePath: filePath, emailContent: emailContent);
+                SendWithOutlook(senderEmail: arguments["-sender"], subject: subject, filePath: filePath, emailContent: emailContent, recipient: arguments["-r"]);
             }
             else // smtp
             {
@@ -132,7 +133,7 @@ internal class Program
         }
     }
 
-    private static void SendWithOutlook(string senderEmail, string subject, string? filePath, string emailContent)
+    private static void SendWithOutlook(string senderEmail, string subject, string? filePath, string emailContent, string recipient)
     {
         try
         {
@@ -145,13 +146,14 @@ internal class Program
                 LogText($"File path: {filePath}");
                 mailItem.Attachments.Add(filePath);
             }
+            mailItem.Recipients.Add(recipient);
             mailItem.SendUsingAccount = outlookApp.Session.Accounts.Cast<Outlook.Account>().FirstOrDefault(a => a.SmtpAddress.Equals(senderEmail, StringComparison.OrdinalIgnoreCase));
             LogText($"Sending from {senderEmail} using Outlook...");
             mailItem.Send();
         }
         catch (Exception ex)
         {
-            throw new Exception("Error sending email with Outlook", ex);
+            throw new Exception(ex.Message);
         }
     }
 
@@ -186,7 +188,7 @@ internal class Program
         }
         catch (Exception ex)
         {
-            throw new Exception("Error sending email with SMTP", ex);
+            throw new Exception(ex.Message);
         }
     }
 
