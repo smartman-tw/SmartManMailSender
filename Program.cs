@@ -132,7 +132,7 @@ internal class Program
         }
         catch (Exception ex)
         {
-            LogError($"An unexpected error occurred. [Message]: {ex.Message}, [StackTrace]: {ex.StackTrace}");
+            LogError($"An unexpected error occurred. [Message] {ex.Message}, [StackTrace] {ex.StackTrace}");
             LogText("Program exited");
             return -1;
         }
@@ -142,8 +142,16 @@ internal class Program
     {
         try
         {
-            Outlook.Application outlookApp = new Outlook.ApplicationClass();
-            Outlook.MailItem mailItem = (Outlook.MailItem)outlookApp.CreateItem(Outlook.OlItemType.olMailItem);
+            Outlook.Application outlookApp = new Outlook.Application();
+            var item = outlookApp.CreateItem(Outlook.OlItemType.olMailItem);
+            Outlook.MailItem? mailItem = item as Outlook.MailItem;
+            if (mailItem == null)
+            { 
+                // Handle the case where the cast failed
+                LogError($"CreateItem did not return a MailItem. Type detected:" + item?.GetType().FullName);
+                return;
+            }
+
             mailItem.Subject = subject;
             mailItem.HTMLBody = emailContent;
             if (filePath != null)
@@ -158,7 +166,7 @@ internal class Program
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            throw new Exception("[Message] " + ex.Message + ", [StackTrace] " + ex.StackTrace);
         }
     }
 
@@ -193,7 +201,7 @@ internal class Program
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            throw new Exception("[Message] " + ex.Message + ", [StackTrace] " + ex.StackTrace);
         }
     }
 
