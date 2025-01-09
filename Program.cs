@@ -77,7 +77,13 @@ internal class Program
             var filePath = arguments.ContainsKey("-f") ? arguments["-f"] : null;
             var templatePath = arguments["-t"];
             var placeholders = arguments.ContainsKey("-p") ? arguments["-p"].Split(',') : new string[0];
-            
+
+            // get full path of a file
+            if (filePath != null && !Path.IsPathRooted(filePath))
+            {
+                filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filePath);
+            }
+
             // Validate file paths
             if (filePath != null && !File.Exists(filePath))
             {

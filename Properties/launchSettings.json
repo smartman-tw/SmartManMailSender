@@ -2,7 +2,7 @@
   "profiles": {
     "SmartManOutlookSender": {
       "commandName": "Project",
-      "commandLineArgs": "outlook -sender frank@smartman.com.tw -s \"My title\" -f \"C:\\Users\\Frank\\Downloads\\smartman_outlook_sender(1)\\Microsoft AI Cloud Partner Program benefits guide_Aug update.pdf\" -r frank@smartman.com.tw -t \"template.txt\" -p \"Robert\",安插字串2,安插字串3,安插字串4,安插字串5,安插字串6,安插字串7"
+      "commandLineArgs": "outlook -r frank@smartman.com.tw -s \"My title\" -f \"tax_report.pdf\" -t \"template.txt\" -p Robert,安插字串2,安插字串3,安插字串4,安插字串5,安插字串6,安插字串7"
     }
   }
 }
